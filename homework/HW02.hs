@@ -23,38 +23,52 @@ colors = [Red, Green, Blue, Yellow, Orange, Purple]
 
 -- Get the number of exact matches between the actual code and the guess
 exactMatches :: Code -> Code -> Int
-exactMatches = undefined
+exactMatches secretCode guess 
+  | length secretCode /= length guess = error "do not match"
+  | otherwise = length (filter (\(a,b) -> a == b) (zip secretCode guess))
 
 -- Exercise 2 -----------------------------------------
 
 -- For each peg in xs, count how many times is occurs in ys
 countColors :: Code -> [Int]
-countColors = undefined
+countColors code = countColor colors
+  where 
+    countColor [] = []
+    countColor (peg:pegs) = (length $ filter (== peg) code) : (countColor pegs)
 
 -- Count number of matches between the actual code and the guess
 matches :: Code -> Code -> Int
-matches = undefined
+matches secret guess
+  | length secret /= length guess = error "do not match"
+  | otherwise = sum (map (\(a,b) -> if a <= b then a else b) countColorPairs)
+    where
+      countColorPairs = zip (countColors secret) (countColors guess)
 
 -- Exercise 3 -----------------------------------------
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove = undefined
+getMove secret guess = Move guess exM (matches secret guess - exM)
+  where
+    exM = exactMatches secret guess
 
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent = undefined
+isConsistent (Move code1 exact nonExact) code2 = (Move code1 exact nonExact) == (getMove code2 code1)
 
 -- Exercise 5 -----------------------------------------
 
 filterCodes :: Move -> [Code] -> [Code]
-filterCodes = undefined
+filterCodes move = filter (\ code -> isConsistent move code)
 
 -- Exercise 6 -----------------------------------------
 
 allCodes :: Int -> [Code]
-allCodes = undefined
+allCodes n  
+  | n == 0 = []
+  | n == 1 = map(\ c -> [c]) colors
+  | otherwise = concatMap (\ c -> map (\ p -> c : p) (allCodes (n - 1))) colors
 
 -- Exercise 7 -----------------------------------------
 
