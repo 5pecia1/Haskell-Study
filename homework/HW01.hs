@@ -40,7 +40,7 @@ sumDigits = sum . map (\x -> if x >= 10 then (x `div` 10) + (x `mod` 10) else x)
 
 -- Validate a credit card number using the above functions.
 luhn :: Integer -> Bool
-luhn n = 0 == mod ((sumDigits . doubleEveryOther . toRevDigits) n) 10
+luhn n = (==) 0 $ (lastDigit . sumDigits . doubleEveryOther . toRevDigits) n
 
 -- Exercise 6 -----------------------------------------
 
