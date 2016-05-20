@@ -34,10 +34,10 @@ type State = String -> Int
 -- Exercise 1 -----------------------------------------
 
 extend :: State -> String -> Int -> State
-extend = undefined
+extend state str n = \s -> if str == s then n else state s
 
 empty :: State
-empty = undefined
+empty = (\_ -> 0)
 
 -- Exercise 2 -----------------------------------------
 
