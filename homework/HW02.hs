@@ -66,14 +66,25 @@ filterCodes move = filter (\ code -> isConsistent move code)
 
 allCodes :: Int -> [Code]
 allCodes n  
-  | n == 0 = []
-  | n == 1 = map(\ c -> [c]) colors
-  | otherwise = concatMap (\ c -> map (\ p -> c : p) (allCodes (n - 1))) colors
+  | n <= 0 = []
+  | n == 1 = map (\a -> [a]) colors
+  | otherwise = concatMap (\a -> map (\b -> a:b) $ allCodes (n - 1)) colors
+    
 
 -- Exercise 7 -----------------------------------------
 
+solveHelper:: [Code] -> Code -> [Move] -> [Move]
+solveHelper xs y zs 
+  | length xs == 1 = zs
+  | otherwise =  solveHelper filteredMove y (move:zs)
+  where
+  move = getMove y (head xs) 
+  filteredMove = filter (isConsistent move) xs 
+  
+
 solve :: Code -> [Move]
-solve = undefined
+solve xs = reverse $ solveHelper codes xs []
+  where codes = allCodes $ length xs
 
 -- Bonus ----------------------------------------------
 
