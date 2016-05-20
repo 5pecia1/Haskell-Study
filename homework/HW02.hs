@@ -71,20 +71,10 @@ allCodes n
   | otherwise = concatMap (\a -> map (\b -> a:b) $ allCodes (n - 1)) colors
     
 
--- Exercise 7 -----------------------------------------
-
-solveHelper:: [Code] -> Code -> [Move] -> [Move]
-solveHelper xs y zs 
-  | length xs == 1 = zs
-  | otherwise =  solveHelper filteredMove y (move:zs)
-  where
-  move = getMove y (head xs) 
-  filteredMove = filter (isConsistent move) xs 
-  
+-- Exercise 7 -----------------------------------------  
 
 solve :: Code -> [Move]
-solve xs = reverse $ solveHelper codes xs []
-  where codes = allCodes $ length xs
+solve xs = undefined
 
 -- Bonus ----------------------------------------------
 
